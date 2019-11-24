@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import $ from 'jquery';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Image, Button, Container, Form} from 'react-bootstrap'
+import {Image, Button, Container, Form, InputGroup} from 'react-bootstrap'
 
 
 class CaptchaRequired extends Error {
@@ -143,12 +143,18 @@ class App extends Component {
                     </Form.Group>
 
                     {x_captcha_url &&
-                    <Form.Group>
-                        <Form.Label column={false}>Введите капчу</Form.Label>
-                        <Image src={x_captcha_url}/>
-                        <Form.Control name="x_captcha_answer" onChange={this.handleChange}
-                                      type="plain" placeholder="Введите капчу"/>
-                    </Form.Group>
+                    <InputGroup className="mb-3">
+                        <InputGroup.Prepend>
+                            <Image fluid src={x_captcha_url}/>
+                        </InputGroup.Prepend>
+                        <Form.Control name="x_captcha_answer" onChange={this.handleChange} as="textarea"
+                                     type="plain" placeholder="Введите капчу"/>
+                        <InputGroup.Append>
+                            <Button type="submit" onClick={this.handleSubmit}>
+                                Обновить
+                            </Button>
+                        </InputGroup.Append>
+                    </InputGroup>
                     }
 
                     <Button variant="primary" type="submit" block onClick={this.handleSubmit}>
