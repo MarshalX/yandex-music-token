@@ -1,0 +1,37 @@
+name: Deploy on GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Node JS
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+      - name: Install dependencies
+        run: yarn install
+      - name: Deploy
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        run: |
+          git config --local user.email "auto@deploy"
+          git config --local user.name "Auto Delpoy"
+
+          git remote set-url origin "$(git config --get remote.origin.url | sed 's#http.*com/#git@github.com:#g')"
+
+          eval `ssh-agent -t 60 -s`
+          echo "$DEPLOY_KEY" | ssh-add -
+
+          mkdir -p ~/.ssh/
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+          yarn deploy
+
+          ssh-agent -k
+        shell: bash
