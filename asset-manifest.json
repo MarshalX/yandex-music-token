@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.js": "/yandex-music-token/static/js/main.ca83fd66.chunk.js",
-    "main.js.map": "/yandex-music-token/static/js/main.ca83fd66.chunk.js.map",
+    "main.js": "/yandex-music-token/static/js/main.4631540d.chunk.js",
+    "main.js.map": "/yandex-music-token/static/js/main.4631540d.chunk.js.map",
     "runtime-main.js": "/yandex-music-token/static/js/runtime-main.3b9181f8.js",
     "runtime-main.js.map": "/yandex-music-token/static/js/runtime-main.3b9181f8.js.map",
     "static/css/2.b0bb7f2c.chunk.css": "/yandex-music-token/static/css/2.b0bb7f2c.chunk.css",
-    "static/js/2.4211e520.chunk.js": "/yandex-music-token/static/js/2.4211e520.chunk.js",
-    "static/js/2.4211e520.chunk.js.map": "/yandex-music-token/static/js/2.4211e520.chunk.js.map",
+    "static/js/2.41149cf2.chunk.js": "/yandex-music-token/static/js/2.41149cf2.chunk.js",
+    "static/js/2.41149cf2.chunk.js.map": "/yandex-music-token/static/js/2.41149cf2.chunk.js.map",
     "index.html": "/yandex-music-token/index.html",
-    "precache-manifest.33004f4009154060d62c1fc9642de035.js": "/yandex-music-token/precache-manifest.33004f4009154060d62c1fc9642de035.js",
+    "precache-manifest.b36ae09e345051ee8ade17b3c017fdf5.js": "/yandex-music-token/precache-manifest.b36ae09e345051ee8ade17b3c017fdf5.js",
     "service-worker.js": "/yandex-music-token/service-worker.js",
     "static/css/2.b0bb7f2c.chunk.css.map": "/yandex-music-token/static/css/2.b0bb7f2c.chunk.css.map"
   },
   "entrypoints": [
     "static/js/runtime-main.3b9181f8.js",
     "static/css/2.b0bb7f2c.chunk.css",
-    "static/js/2.4211e520.chunk.js",
-    "static/js/main.ca83fd66.chunk.js"
+    "static/js/2.41149cf2.chunk.js",
+    "static/js/main.4631540d.chunk.js"
   ]
 }
