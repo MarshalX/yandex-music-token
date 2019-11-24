@@ -1,8 +1,22 @@
 import React, {Component} from 'react';
 import $ from 'jquery';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Button, Container, Form} from 'react-bootstrap'
+import {Image, Button, Container, Form} from 'react-bootstrap'
 
+
+class CaptchaRequired extends Error {
+    constructor(body) {
+        super();
+        this.body = body
+    }
+}
+
+class CaptchaWrong extends Error {
+    constructor(body) {
+        super();
+        this.body = body
+    }
+}
 
 /**
  * Reference: https://github.com/MarshalX/yandex-music-api/blob/952145c3b8431385f2fe8273d52d8eb4e49fcceb/yandex_music/client.py#L89
@@ -27,8 +41,6 @@ class YandexMusicApi {
             data = {...data, x_captcha_answer, x_captcha_key}
         }
 
-        console.log(url, data);
-
         return await this.post(url, data)
             .then(resp => resp.json())
             .then(json => json['access_token']);
@@ -43,12 +55,29 @@ class YandexMusicApi {
         return str.join("&");
     };
 
+    handleCaptcha = (errorMessage, json) => {
+        if (errorMessage.includes('Wrong')) {
+            throw new CaptchaWrong(json);
+        } else {
+            throw new CaptchaRequired(json);
+        }
+    };
+
     post = (url, data) => {
         return fetch(url, {
             method: 'POST',
             body: this.serialize(data)
         }).then(resp => {
-            if (!resp.ok) throw Error('Response is not ok :(');
+            if (!resp.ok) {
+                return resp.json().then(json => {
+                    let message = json.error_description || 'Unknown HTTP Error';
+                    if (message.includes('CAPTCHA')) {
+                        return this.handleCaptcha(message, json);
+                    } else {
+                        throw new Error(message);
+                    }
+                });
+            }
             return resp;
         });
     };
@@ -73,15 +102,31 @@ class App extends Component {
     handleSubmit = event => {
         event.preventDefault();
 
-        const {username, password} = this.state;
-        this.api.generate_token_by_username_and_password(username, password).then(token => {
+        this.setState({
+            ...this.state,
+            x_captcha_url: undefined,
+            x_captcha_key: undefined
+        });
+
+        const {username, password, x_captcha_answer, x_captcha_key} = this.state;
+        this.api.generate_token_by_username_and_password(username, password, x_captcha_answer, x_captcha_key).then(token => {
             alert(token);
         }).catch(error => {
-            alert(`An error has occurred: ${error}`)
+            if (error instanceof CaptchaRequired || error instanceof CaptchaWrong) {
+                const {x_captcha_url, x_captcha_key} = error.body;
+                this.setState({
+                    ...this.state,
+                    x_captcha_url,
+                    x_captcha_key
+                })
+            } else {
+                alert(`An error has occurred: ${error}`)
+            }
         })
     };
 
     render() {
+        const {x_captcha_url} = this.state;
         return (
             <Container>
                 <Form>
@@ -96,6 +141,15 @@ class App extends Component {
                         <Form.Control name="password" onChange={this.handleChange}
                                       type="password" placeholder="Введите пароль"/>
                     </Form.Group>
+
+                    {x_captcha_url &&
+                    <Form.Group>
+                        <Form.Label column={false}>Введите капчу</Form.Label>
+                        <Image src={x_captcha_url}/>
+                        <Form.Control name="x_captcha_answer" onChange={this.handleChange}
+                                      type="plain" placeholder="Введите капчу"/>
+                    </Form.Group>
+                    }
 
                     <Button variant="primary" type="submit" block onClick={this.handleSubmit}>
                         Войти
