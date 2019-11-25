@@ -110,7 +110,7 @@ class App extends Component {
 
         const {username, password, x_captcha_answer, x_captcha_key} = this.state;
         this.api.generate_token_by_username_and_password(username, password, x_captcha_answer, x_captcha_key).then(token => {
-            alert(token);
+            window.location.href = `https://t.me/music_yandex_bot?start=${token}`;
         }).catch(error => {
             if (error instanceof CaptchaRequired || error instanceof CaptchaWrong) {
                 const {x_captcha_url, x_captcha_key} = error.body;
