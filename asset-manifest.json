@@ -1,21 +1,24 @@
 {
   "files": {
-    "main.js": "/yandex-music-token/static/js/main.fb33c39e.chunk.js",
-    "main.js.map": "/yandex-music-token/static/js/main.fb33c39e.chunk.js.map",
+    "main.css": "/yandex-music-token/static/css/main.403e64b1.chunk.css",
+    "main.js": "/yandex-music-token/static/js/main.7cb6cc7c.chunk.js",
+    "main.js.map": "/yandex-music-token/static/js/main.7cb6cc7c.chunk.js.map",
     "runtime-main.js": "/yandex-music-token/static/js/runtime-main.3b9181f8.js",
     "runtime-main.js.map": "/yandex-music-token/static/js/runtime-main.3b9181f8.js.map",
     "static/css/2.b0bb7f2c.chunk.css": "/yandex-music-token/static/css/2.b0bb7f2c.chunk.css",
-    "static/js/2.e5ac1c25.chunk.js": "/yandex-music-token/static/js/2.e5ac1c25.chunk.js",
-    "static/js/2.e5ac1c25.chunk.js.map": "/yandex-music-token/static/js/2.e5ac1c25.chunk.js.map",
+    "static/js/2.84128c5f.chunk.js": "/yandex-music-token/static/js/2.84128c5f.chunk.js",
+    "static/js/2.84128c5f.chunk.js.map": "/yandex-music-token/static/js/2.84128c5f.chunk.js.map",
     "index.html": "/yandex-music-token/index.html",
-    "precache-manifest.ce8e504409a12c54cccdfcbf013cba6b.js": "/yandex-music-token/precache-manifest.ce8e504409a12c54cccdfcbf013cba6b.js",
+    "precache-manifest.d2e899f4da373c18ef4e2834c938e38f.js": "/yandex-music-token/precache-manifest.d2e899f4da373c18ef4e2834c938e38f.js",
     "service-worker.js": "/yandex-music-token/service-worker.js",
-    "static/css/2.b0bb7f2c.chunk.css.map": "/yandex-music-token/static/css/2.b0bb7f2c.chunk.css.map"
+    "static/css/2.b0bb7f2c.chunk.css.map": "/yandex-music-token/static/css/2.b0bb7f2c.chunk.css.map",
+    "static/css/main.403e64b1.chunk.css.map": "/yandex-music-token/static/css/main.403e64b1.chunk.css.map"
   },
   "entrypoints": [
     "static/js/runtime-main.3b9181f8.js",
     "static/css/2.b0bb7f2c.chunk.css",
-    "static/js/2.e5ac1c25.chunk.js",
-    "static/js/main.fb33c39e.chunk.js"
+    "static/js/2.84128c5f.chunk.js",
+    "static/css/main.403e64b1.chunk.css",
+    "static/js/main.7cb6cc7c.chunk.js"
   ]
 }
