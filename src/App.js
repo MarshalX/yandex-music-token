@@ -1,166 +1,82 @@
 import React, {Component} from 'react';
-import $ from 'jquery';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import {Image, Button, Container, Form, InputGroup} from 'react-bootstrap'
-
-
-class CaptchaRequired extends Error {
-    constructor(body) {
-        super();
-        this.body = body
-    }
-}
-
-class CaptchaWrong extends Error {
-    constructor(body) {
-        super();
-        this.body = body
-    }
-}
-
-/**
- * Reference: https://github.com/MarshalX/yandex-music-api/blob/952145c3b8431385f2fe8273d52d8eb4e49fcceb/yandex_music/client.py#L89
- */
-class YandexMusicApi {
-    oauth_url = 'https://oauth.yandex.ru';
-    client_id = '23cabbbdc6cd418abb4b39c32c41195d';
-    client_secret = '53bc75238f0c4d08a118e51fe9203300';
-
-    generate_token_by_username_and_password = async (username, password, x_captcha_answer, x_captcha_key) => {
-        const url = `${this.oauth_url}/token`;
-
-        let data = {
-            grant_type: 'password',
-            client_id: this.client_id,
-            client_secret: this.client_secret,
-            username: username,
-            password: password
-        };
-
-        if (x_captcha_answer && x_captcha_key) {
-            data = {...data, x_captcha_answer, x_captcha_key}
-        }
-
-        return await this.post(url, data)
-            .then(resp => resp.json())
-            .then(json => json['access_token']);
-    };
-
-    serialize = (obj) => {
-        let str = [];
-        for (let p in obj)
-            if (obj.hasOwnProperty(p)) {
-                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-            }
-        return str.join("&");
-    };
-
-    handleCaptcha = (errorMessage, json) => {
-        if (errorMessage.includes('Wrong')) {
-            throw new CaptchaWrong(json);
-        } else {
-            throw new CaptchaRequired(json);
-        }
-    };
-
-    post = (url, data) => {
-        return fetch(url, {
-            method: 'POST',
-            body: this.serialize(data)
-        }).then(resp => {
-            if (!resp.ok) {
-                return resp.json().then(json => {
-                    let message = json.error_description || 'Unknown HTTP Error';
-                    if (message.includes('CAPTCHA')) {
-                        return this.handleCaptcha(message, json);
-                    } else {
-                        throw new Error(message);
-                    }
-                });
-            }
-            return resp;
-        });
-    };
-}
+import {CardDeck, Badge, Col, Container, Image, Row} from 'react-bootstrap'
+import AuthForm from "./AuthForm";
+import TrustCard from "./TrustCard";
 
 class App extends Component {
-
-    api = new YandexMusicApi();
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: '',
-            password: ''
-        };
-    }
-
-    handleChange = ({target: {name, value}}) => {
-        this.setState({...this.state, [name]: value})
-    };
-
-    handleSubmit = event => {
-        event.preventDefault();
-
-        this.setState({
-            ...this.state,
-            x_captcha_url: undefined,
-            x_captcha_key: undefined
-        });
-
-        const {username, password, x_captcha_answer, x_captcha_key} = this.state;
-        this.api.generate_token_by_username_and_password(username, password, x_captcha_answer, x_captcha_key).then(token => {
-            window.location.href = `https://t.me/music_yandex_bot?start=${token}`;
-        }).catch(error => {
-            if (error instanceof CaptchaRequired || error instanceof CaptchaWrong) {
-                const {x_captcha_url, x_captcha_key} = error.body;
-                this.setState({
-                    ...this.state,
-                    x_captcha_url,
-                    x_captcha_key
-                })
-            } else {
-                alert(`An error has occurred: ${error}`)
-            }
-        })
-    };
-
     render() {
-        const {x_captcha_url} = this.state;
         return (
             <Container>
-                <Form>
-                    <Form.Group controlId="formBasicEmail">
-                        <Form.Label column={false}>Введите логин, почту или телефон:</Form.Label>
-                        <Form.Control name="username" onChange={this.handleChange}
-                                      type="email" placeholder="Введите логин, почту или телефон"/>
-                    </Form.Group>
-
-                    <Form.Group controlId="formBasicPassword">
-                        <Form.Label column={false}>Введите пароль</Form.Label>
-                        <Form.Control name="password" onChange={this.handleChange}
-                                      type="password" placeholder="Введите пароль"/>
-                    </Form.Group>
-
-                    {x_captcha_url &&
-                    <InputGroup className="mb-3">
-                        <InputGroup.Prepend>
-                            <Image fluid src={x_captcha_url}/>
-                        </InputGroup.Prepend>
-                        <Form.Control name="x_captcha_answer" onChange={this.handleChange} as="textarea"
-                                     type="plain" placeholder="Введите капчу"/>
-                        <InputGroup.Append>
-                            <Button type="submit" onClick={this.handleSubmit}>
-                                Обновить
-                            </Button>
-                        </InputGroup.Append>
-                    </InputGroup>
-                    }
-
-                    <Button variant="primary" type="submit" block onClick={this.handleSubmit}>
-                        Войти
-                    </Button>
-                </Form>
+                <Row className="mt-5">
+                    <Col className="d-none d-xl-block col-md-4"/>
+                    <Col>
+                        <Row>
+                            <Container>
+                                <h4>Яндекс.Музыка - Telegram <Badge variant="primary">Bot</Badge></h4>
+                            </Container>
+                        </Row>
+                        <Row>
+                            <Container>
+                                <Image src="logo.png" width="100%" roundedCircle/>
+                            </Container>
+                        </Row>
+                        <Row>
+                            <Container>
+                                <p>Неофициальный бот. Временно доступен только для пользователей <b>с подпиской</b>.
+                                    Публичный чат для вопросов и предложений: <a
+                                        href="https://teleg.run/music_yandex_chat"> @music_yandex_chat</a>
+                                </p>
+                            </Container>
+                        </Row>
+                    </Col>
+                    <Col className="d-none d-xl-block col-md-4"/>
+                </Row>
+                <Row>
+                    <Col className="d-none d-xl-block col-md-4"/>
+                    <Col><AuthForm/></Col>
+                    <Col className="d-none d-xl-block col-md-4"/>
+                </Row>
+                <Row className="mt-5">
+                    <Container className="justify-content-center ">
+                        <h2 className="text-center mb-3">Причины, по которым нам стоит доверять</h2>
+                        <Row>
+                            <CardDeck>
+                                <TrustCard icon={['fab', 'yandex']} title="Напрямую в Яндекс!"
+                                           text="Ваш логин и пароль отправляется с Вашего компьютера сразу на сервера
+                                           Яндекса без каких-либо посредников."/>
+                                <TrustCard icon={['fab', 'expeditedssl']} title="Используем безопасное соединение!"
+                                           text="Все ваши данные отправляются в зашифрованном виде через протокол HTTPS."/>
+                                <TrustCard icon="key" title="Не храним ваши пароли!"
+                                           text="На наших серверах хранится только Ваш уникальный токен,
+                                           полученный при авторизации."/>
+                            </CardDeck>
+                            <CardDeck>
+                                <TrustCard icon="code" title="Открытый исходный код!"
+                                           text="Весь исходный код опубликован в репозитории на GitHub и доступен для
+                                            просмотра."/>
+                                <TrustCard icon="shield-alt" title="Только официальное приложение!"
+                                           text="Авторизация происходит через OAuth приложение Яндекса используемое в их
+                                           клиентах."/>
+                                <TrustCard icon="spinner" title="Выполнение в браузере!"
+                                           text="Весь код выполняется в Вашем браузере без возможности вмешательства с
+                                           чьей-либо стороны."/>
+                            </CardDeck>
+                        </Row>
+                    </Container>
+                </Row>
+                <hr/>
+                <Row>
+                    <Container>
+                        <Row className="d-flex justify-content-between">
+                            <Col>
+                                <span>Исходный код: <a href="https://github.com/MarshalX/yandex-music-token">yandex-music-token</a></span>
+                            </Col>
+                            <Col className="text-right">
+                                <span> Автор: <a href="https://teleg.run/MarshalX">@MarshalX</a></span>
+                            </Col>
+                        </Row>
+                    </Container>
+                </Row>
             </Container>
         );
     }
