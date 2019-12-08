@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "5121a3ed706914f75f2689fffdd1551a",
+    "revision": "9db55438a4e3009d30d9dc0cc631497c",
     "url": "/yandex-music-token/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/yandex-music-token/static/css/2.b0bb7f2c.chunk.css"
   },
   {
-    "revision": "5c8d7bf517500acdc2f2",
+    "revision": "2cb33bdb3a28ff422e66",
     "url": "/yandex-music-token/static/css/main.403e64b1.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/yandex-music-token/static/js/2.84128c5f.chunk.js"
   },
   {
-    "revision": "5c8d7bf517500acdc2f2",
-    "url": "/yandex-music-token/static/js/main.7cb6cc7c.chunk.js"
+    "revision": "2cb33bdb3a28ff422e66",
+    "url": "/yandex-music-token/static/js/main.3268d3cc.chunk.js"
   },
   {
     "revision": "c399c8b5a45e5a5213e5",
