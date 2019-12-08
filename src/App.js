@@ -65,7 +65,7 @@ class App extends Component {
                     </Container>
                 </Row>
                 <hr/>
-                <Row>
+                <Row className="mb-3">
                     <Container>
                         <Row className="d-flex justify-content-between">
                             <Col>
