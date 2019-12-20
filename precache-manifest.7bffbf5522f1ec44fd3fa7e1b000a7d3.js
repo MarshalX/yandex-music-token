@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "9db55438a4e3009d30d9dc0cc631497c",
+    "revision": "d5501dab20ee8f1cc10a74b442eeae7e",
     "url": "/yandex-music-token/index.html"
   },
   {

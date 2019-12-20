@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/yandex-music-token/precache-manifest.2dd704134e56117f9938acbbf8770f43.js"
+  "/yandex-music-token/precache-manifest.7bffbf5522f1ec44fd3fa7e1b000a7d3.js"
 );
 
 self.addEventListener('message', (event) => {
