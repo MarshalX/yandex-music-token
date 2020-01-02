@@ -12,7 +12,8 @@ class AuthForm extends React.Component {
         this.state = {
             username: '',
             password: '',
-            error: null
+            error: null,
+            token: null
         };
     }
 
@@ -31,7 +32,8 @@ class AuthForm extends React.Component {
 
         const {username, password, x_captcha_answer, x_captcha_key} = this.state;
         this.api.generate_token_by_username_and_password(username, password, x_captcha_answer, x_captcha_key).then(token => {
-            window.location.href = `${this.mirror}music_yandex_bot?start=${token}`;
+            window.location.href = `tg://resolve?domain=music_yandex_bot&start=${token}`;
+            this.setState({...this.state, token: token})
         }).catch(error => {
             if (error instanceof CaptchaRequired || error instanceof CaptchaWrong) {
                 const {x_captcha_url, x_captcha_key, error_description} = error.body;
@@ -51,8 +53,19 @@ class AuthForm extends React.Component {
     };
 
     render() {
-        const {x_captcha_url, error} = this.state;
-        return (
+        const {x_captcha_url, error, token} = this.state;
+        return token ? (
+            <>
+                <a href={`tg://resolve?domain=music_yandex_bot&start=${token}`}>
+                    <Button variant="primary" block>
+                        Перейти в бота
+                    </Button>
+                </a>
+                <small className="text-muted ">Если кнопка не работает -
+                    <a href={`${this.mirror}music_yandex_bot?start=${token}`}> перейдите по ссылке</a>
+                </small>
+            </>
+        ) : (
             <Form>
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label column={false}>Введите логин, почту или телефон:</Form.Label>

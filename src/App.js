@@ -22,15 +22,14 @@ class App extends Component {
                         </Row>
                         <Row>
                             <Container>
-                                <p>Неофициальный бот. Позволяет слушать умные и ваши личные плейлисты, а так же <b>понравившиеся
-                                    треки</b>. Вы
-                                    можете лайкать или дизлайкать их, получать текст песен и всё это в пределах
-                                    мессенджера Telegram!</p>
+                                <p>Неофициальный бот. Позволяет слушать умные и ваши личные плейлисты, а так же
+                                    <b>понравившиеся треки</b>. Вы можете лайкать или дизлайкать их, получать текст
+                                    песен и всё это в пределах мессенджера Telegram!</p>
                                 <p>
                                     Публичный чат для вопросов и предложений:
-                                    <a href="https://teleg.run/music_yandex_chat"> @music_yandex_chat</a></p>
+                                    <a href="tg://resolve?domain=music_yandex_chat"> @music_yandex_chat</a></p>
                                 <p>Канал с обновлениями и новостями:
-                                    <a href="https://teleg.run/music_yandex_channel"> @music_yandex_channel</a></p>
+                                    <a href="tg://resolve?domain=music_yandex_channel"> @music_yandex_channel</a></p>
                             </Container>
                         </Row>
                     </Col>
@@ -39,9 +38,6 @@ class App extends Component {
                 <Row>
                     <Col className="d-none d-xl-block col-md-4"/>
                     <Col>
-                        <p className="text-warning">Пожалуйста, обратите внимание на то, что после авторизации
-                            необходимо нажать на кнопку "Открыть", чтобы вернуться обратно в бота и начать им
-                            пользоваться!</p>
                         <AuthForm/>
                     </Col>
                     <Col className="d-none d-xl-block col-md-4"/>
@@ -83,7 +79,7 @@ class App extends Component {
                                     href="https://github.com/MarshalX/yandex-music-token">yandex-music-token</a></span>
                             </Col>
                             <Col className="text-right">
-                                <span> Автор: <a href="https://teleg.run/MarshalX">@MarshalX</a></span>
+                                <span> Автор: <a href="tg://resolve?domain=MarshalX">@MarshalX</a></span>
                             </Col>
                         </Row>
                     </Container>
