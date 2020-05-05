@@ -3,10 +3,6 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import React from "react";
 
 class TrustCard extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <Card className="mb-4">

@@ -1,6 +1,6 @@
 import {Button, Col, Form, Image, Row} from "react-bootstrap";
 import React from "react";
-import {CaptchaRequired, CaptchaWrong, YandexMusicApi} from "./api";
+import {CaptchaRequired, CaptchaWrong, YandexMusicApi} from "./Api";
 
 
 class AuthForm extends React.Component {

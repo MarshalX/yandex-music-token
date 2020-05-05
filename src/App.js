@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {CardDeck, Badge, Col, Container, Image, Row} from 'react-bootstrap'
+import {Badge, CardDeck, Col, Container, Image, Row} from 'react-bootstrap'
 import AuthForm from "./AuthForm";
 import TrustCard from "./TrustCard";
 
@@ -8,7 +8,7 @@ class App extends Component {
         return (
             <Container>
                 <Row className="mt-5">
-                    <Col className="d-none d-xl-block col-md-4"/>
+                    <Col className="d-none d-xl-block col-md-3"/>
                     <Col>
                         <Row>
                             <Container>
@@ -22,25 +22,26 @@ class App extends Component {
                         </Row>
                         <Row>
                             <Container>
-                                <p>Неофициальный бот. Позволяет слушать умные и ваши личные плейлисты, а так же
-                                    <b> понравившиеся треки</b>. Вы можете лайкать или дизлайкать их, получать текст
-                                    песен и всё это в пределах мессенджера Telegram!</p>
+                                <p>Данный бот позволяет прослушивать плейлист дня и другие умные плейлисты, Ваши личные
+                                    плейлисты, а так же понравившиеся треки. Вы можете лайкать и дизлайкать треки,
+                                    получать текст песен, искать новые музыкальные предпочтения, делиться ими со всеми и
+                                    слушать любимую музыку в мессенджере Telegram.</p>
                                 <p>
                                     Публичный чат для вопросов и предложений:
-                                    <a href="tg://resolve?domain=music_yandex_chat"> @music_yandex_chat</a></p>
+                                    <a href="tg://resolve?domain=MarshalCh"> @MarshalCh</a></p>
                                 <p>Канал с обновлениями и новостями:
                                     <a href="tg://resolve?domain=music_yandex_channel"> @music_yandex_channel</a></p>
                             </Container>
                         </Row>
                     </Col>
-                    <Col className="d-none d-xl-block col-md-4"/>
+                    <Col className="d-none d-xl-block col-md-3"/>
                 </Row>
                 <Row>
-                    <Col className="d-none d-xl-block col-md-4"/>
+                    <Col className="d-none d-xl-block col-md-3"/>
                     <Col>
                         <AuthForm/>
                     </Col>
-                    <Col className="d-none d-xl-block col-md-4"/>
+                    <Col className="d-none d-xl-block col-md-3"/>
                 </Row>
                 <Row className="mt-5">
                     <Container className="justify-content-center ">

@@ -2,7 +2,7 @@
  * Reference: https://github.com/MarshalX/yandex-music-api/blob/952145c3b8431385f2fe8273d52d8eb4e49fcceb/yandex_music/client.py#L89
  */
 class YandexMusicApi {
-    oauth_url = 'https://oauth.yandex.ru';
+    oauth_url = 'https://oauth.yandex.com';
     client_id = '23cabbbdc6cd418abb4b39c32c41195d';
     client_secret = '53bc75238f0c4d08a118e51fe9203300';
 
@@ -77,6 +77,6 @@ class CaptchaWrong extends Error {
     }
 }
 
-export {YandexMusicApi as YandexMusicApi};
-export {CaptchaRequired as CaptchaRequired};
-export {CaptchaWrong as CaptchaWrong};
+export {YandexMusicApi};
+export {CaptchaRequired};
+export {CaptchaWrong};
