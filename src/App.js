@@ -27,8 +27,8 @@ class App extends Component {
                                     получать текст песен, искать новые музыкальные предпочтения, делиться ими со всеми и
                                     слушать любимую музыку в мессенджере Telegram.</p>
                                 <p>
-                                    Публичный чат для вопросов и предложений:
-                                    <a href="tg://resolve?domain=MarshalCh"> @MarshalCh</a></p>
+                                    Trello для вопросов и предложений:
+                                    <a href="https://trello.com/b/D5f3kRxF"> Yandex.Music Telegram Bot</a></p>
                                 <p>Канал с обновлениями и новостями:
                                     <a href="tg://resolve?domain=music_yandex_channel"> @music_yandex_channel</a></p>
                             </Container>
