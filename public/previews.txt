@@ -1,0 +1,9 @@
+random_voices\Aphanasiy\Aphanasiy_Advertizing_advertizing.mp3
+random_voices\Aphanasiy\Aphanasiy_Church_Waiting.mp3
+random_voices\Aphanasiy\Aphanasiy_Deactivate_preview.mp3
+random_voices\Aphanasiy\Aphanasiy_Not_so_fast.mp3
+random_voices\Aphanasiy\Aphanasiy_Press_0.mp3
+random_voices\Aphanasiy\Aphanasiy_Room_6.mp3
+random_voices\Aphanasiy\Aphanasiy_Scha_skachau.mp3
+random_voices\Aphanasiy\Aphanasiy_The_fastest.mp3
+random_voices\MarshalX\not_so_fast.mp3
