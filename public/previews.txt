@@ -11,4 +11,4 @@ random_voices/Aphanasiy/How_to_find_music.mp3
 random_voices/Aphanasiy/How_to_make_own_preview.mp3
 random_voices/Aphanasiy/How_to_use_inline.mp3
 random_voices/Aphanasiy/Sho_vy_delaete.mp3
-random_voices/MarshalX/not_so_fast.mp3
+random_voices/Marshal/not_so_fast.mp3
