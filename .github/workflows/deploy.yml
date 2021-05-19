@@ -16,6 +16,10 @@ jobs:
           node-version: '14'
       - name: Install dependencies
         run: yarn install
+      - name: Build
+        run: yarn build
       - name: Deploy
-        run: |
-          yarn deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          branch: gh-pages
+          folder: build
