@@ -5,12 +5,13 @@ import { Captcha, YandexMusicApi } from './Api';
 
 class AuthForm extends React.Component {
     api = new YandexMusicApi();
-    mirror = 'https://teleg.run/';
+    mirror = 'https://t.me/';
 
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
+            track_id: null,
+            login: '',
             password: '',
             error: null,
             token: null
@@ -26,8 +27,7 @@ class AuthForm extends React.Component {
 
         this.setState({
             ...this.state,
-            x_captcha_url: undefined,
-            x_captcha_key: undefined
+            captcha_image: undefined,
         });
 
         const {track_id, login, password, captcha_answer} = this.state;
@@ -43,25 +43,25 @@ class AuthForm extends React.Component {
             window.location.href = `tg://resolve?domain=music_yandex_bot&start=${token}`;
             this.setState({...this.state, token: token})
         }).catch(error => {
-            if (error instanceof CaptchaRequired || error instanceof CaptchaWrong) {
-                const {x_captcha_url, x_captcha_key, error_description} = error.body;
+            if (error instanceof Captcha) {
+                const {captcha_image_url, track_id} = error.body;
                 this.setState({
                     ...this.state,
-                    x_captcha_url,
-                    x_captcha_key,
-                    error: error_description
+                    captcha_image_url: captcha_image_url,
+                    track_id: track_id,
+                    error: 'Необходимо пройти капчу',
                 })
             } else {
                 this.setState({
                     ...this.state,
-                    error
+                    error: error.body,
                 });
             }
         })
     };
 
     render() {
-        const {x_captcha_url, error, token} = this.state;
+        const {captcha_image_url, error, token} = this.state;
         return token ? (
             <>
                 <a href={`tg://resolve?domain=music_yandex_bot&start=${token}`}>
@@ -87,10 +87,10 @@ class AuthForm extends React.Component {
                                   type="password" placeholder="Введите пароль"/>
                 </Form.Group>
 
-                {x_captcha_url &&
+                {captcha_image_url &&
                 <Form.Group controlId="formBasicCaptcha">
                     <Row className="mb-2">
-                        <Col><Image fluid src={x_captcha_url}/></Col>
+                        <Col><Image fluid src={captcha_image_url}/></Col>
                         <Col className="align-self-center">
                             <Button className="btn-block" type="submit" onClick={this.handleSubmit}>
                                 Обновить
@@ -99,7 +99,7 @@ class AuthForm extends React.Component {
                     </Row>
                     <Row>
                         <Col>
-                            <Form.Control name="x_captcha_answer" onChange={this.handleChange}
+                            <Form.Control name="captcha_answer" onChange={this.handleChange}
                                           type="text" placeholder="Введите код с картинки"/>
                         </Col>
                     </Row>

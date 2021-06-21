@@ -1,6 +1,12 @@
 /**
- * Reference: https://github.com/MarshalX/yandex-music-api/blob/952145c3b8431385f2fe8273d52d8eb4e49fcceb/yandex_music/client.py#L89
+ * Reference: https://github.com/MarshalX/yandex-music-api/blob/1fc342183ba59e4d1c47b6d8ae5ac6afe46d6a14/yandex_music/client.py#L173
  */
+
+const CLIENT_ID = '23cabbbdc6cd418abb4b39c32c41195d';
+const CLIENT_SECRET = '53bc75238f0c4d08a118e51fe9203300';
+const X_TOKEN_CLIENT_ID = 'c0ebe342af7d48fbbbfcf2d2eedb8f9e';
+const X_TOKEN_CLIENT_SECRET = 'ad0a908f0aa341a182a37ecd75bc319e';
+
 class YandexMusicApi {
     passport_url = 'https://mobileproxy.passport.yandex.net';
     auth_sdk_params = 'app_id=ru.yandex.mobile.music&app_version_name=5.18&app_platform=iPad'
@@ -44,9 +50,7 @@ class YandexMusicApi {
             throw new BadRequest(res.errors.join('\n'));
         }
 
-        return await this.post(url, data)
-            .then(resp => resp.json())
-            .then(json => json['access_token']);
+        return res.track_id;
     };
 
     send_authentication_password = async (track_id, password, captcha_answer) => {
@@ -105,17 +109,9 @@ class YandexMusicApi {
         let str = [];
         for (let p in obj)
             if (obj.hasOwnProperty(p)) {
-                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                str.push(`${encodeURIComponent(p)}=${encodeURIComponent(obj[p])}`);
             }
-        return str.join("&");
-    };
-
-    handleCaptcha = (errorMessage, json) => {
-        if (errorMessage.includes('Wrong')) {
-            throw new CaptchaWrong(json);
-        } else {
-            throw new CaptchaRequired(json);
-        }
+        return str.join('&');
     };
 
     post = async (url, data) => {
@@ -131,20 +127,20 @@ class YandexMusicApi {
     };
 }
 
-class CaptchaRequired extends Error {
+class Captcha extends Error {
     constructor(body) {
         super();
         this.body = body
     }
 }
 
-class CaptchaWrong extends Error {
+class BadRequest extends Error{
     constructor(body) {
         super();
-        this.body = body
+        this.body = body;
     }
 }
 
-export {YandexMusicApi};
-export {CaptchaRequired};
-export {CaptchaWrong};
+export { YandexMusicApi };
+export { Captcha };
+export { BadRequest };
