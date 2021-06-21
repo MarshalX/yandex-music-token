@@ -1,6 +1,6 @@
-import {Button, Col, Form, Image, Row} from "react-bootstrap";
-import React from "react";
-import {CaptchaRequired, CaptchaWrong, YandexMusicApi} from "./Api";
+import { Button, Col, Form, Image, Row } from 'react-bootstrap';
+import React from 'react';
+import { Captcha, YandexMusicApi } from './Api';
 
 
 class AuthForm extends React.Component {
@@ -30,8 +30,16 @@ class AuthForm extends React.Component {
             x_captcha_key: undefined
         });
 
-        const {username, password, x_captcha_answer, x_captcha_key} = this.state;
-        this.api.generate_token_by_username_and_password(username, password, x_captcha_answer, x_captcha_key).then(token => {
+        const {track_id, login, password, captcha_answer} = this.state;
+
+        if (!login || !password) {
+            return this.setState({
+                ...this.state,
+                error: 'Вы забыли ввести логин или пароль',
+            })
+        }
+
+        this.api.generate_token_by_login_and_password(login, password, track_id, captcha_answer).then(token => {
             window.location.href = `tg://resolve?domain=music_yandex_bot&start=${token}`;
             this.setState({...this.state, token: token})
         }).catch(error => {
@@ -69,7 +77,7 @@ class AuthForm extends React.Component {
             <Form>
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label column={false}>Введите логин, почту или телефон:</Form.Label>
-                    <Form.Control name="username" onChange={this.handleChange}
+                    <Form.Control name="login" onChange={this.handleChange}
                                   type="email" placeholder="Введите логин, почту или телефон"/>
                 </Form.Group>
 

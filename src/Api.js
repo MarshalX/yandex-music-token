@@ -2,29 +2,104 @@
  * Reference: https://github.com/MarshalX/yandex-music-api/blob/952145c3b8431385f2fe8273d52d8eb4e49fcceb/yandex_music/client.py#L89
  */
 class YandexMusicApi {
-    oauth_url = 'https://oauth.yandex.com';
-    client_id = '23cabbbdc6cd418abb4b39c32c41195d';
-    client_secret = '53bc75238f0c4d08a118e51fe9203300';
+    passport_url = 'https://mobileproxy.passport.yandex.net';
+    auth_sdk_params = 'app_id=ru.yandex.mobile.music&app_version_name=5.18&app_platform=iPad'
 
-    generate_token_by_username_and_password = async (username, password, x_captcha_answer, x_captcha_key) => {
-        const url = `${this.oauth_url}/token`;
+    generate_token_by_login_and_password = async (login, password, track_id, captcha_answer) => {
+        if (!track_id) {
+            track_id = await this.start_authentication(login);
+        }
 
-        let data = {
-            grant_type: 'password',
-            client_id: this.client_id,
-            client_secret: this.client_secret,
-            username: username,
-            password: password
+        let x_token;
+        try {
+            x_token = await this.send_authentication_password(track_id, password, captcha_answer);
+        } catch (e) {
+            if (!e.captcha_image_url) {
+                throw e;
+            } else {
+                throw new Captcha({
+                    captcha_image_url: e.captcha_image_url,
+                    track_id: track_id,
+                });
+            }
+        }
+
+        return await this.generate_yandex_music_token_by_x_token(x_token);
+    };
+
+    start_authentication = async login => {
+        const url = `${this.passport_url}/2/bundle/mobile/start`;
+
+        const data = {
+            'client_id': CLIENT_ID,
+            'client_secret': CLIENT_SECRET,
+            'login': login,
+            'x_token_client_id': X_TOKEN_CLIENT_ID,
+            'x_token_client_secret': X_TOKEN_CLIENT_SECRET,
+            'display_language': 'ru',
         };
 
-        if (x_captcha_answer && x_captcha_key) {
-            data = {...data, x_captcha_answer, x_captcha_key}
+        const res = await this.post(url, data);
+        if (!res.status || res.status === 'error') {
+            throw new BadRequest(res.errors.join('\n'));
         }
 
         return await this.post(url, data)
             .then(resp => resp.json())
             .then(json => json['access_token']);
     };
+
+    send_authentication_password = async (track_id, password, captcha_answer) => {
+        const url = `${this.passport_url}/1/bundle/mobile/auth/password`;
+
+        const data = {
+            'track_id': track_id,
+            'password': password,
+        }
+
+        if (captcha_answer) {
+            data.captcha_answer = captcha_answer;
+        }
+
+        const res = await this.post(url, data);
+
+        const status = res.status || 'error';
+        if (status === 'ok') {
+            return res.x_token;
+        }
+
+        if (res.errors.includes('password.not_matched')) {
+            throw new BadRequest('Неправильный пароль');
+        } else if (res.errors.includes('captcha.required')) {
+            throw new Captcha({
+                captcha_image_url: res.captcha_image_url,
+                track_id: track_id,
+            });
+        } else if (res.errors.includes('captcha.not_shown')) {
+            throw new BadRequest('Капча не была отображена');
+        } else {
+            throw new BadRequest(res.errors.join('\n'));
+        }
+    }
+
+    generate_yandex_music_token_by_x_token = async x_token => {
+        const url = `${this.passport_url}/1/token/?${this.auth_sdk_params}`
+
+        const data = {
+            'access_token': x_token,
+            'client_id': CLIENT_ID,
+            'client_secret': CLIENT_SECRET,
+            'grant_type': 'x-token',
+        }
+
+        const res = await this.post(url, data);
+
+        if (res.access_token) {
+            return res.access_token;
+        }
+
+        throw new BadRequest(res.errors.join('\n'));
+    }
 
     serialize = (obj) => {
         let str = [];
@@ -43,23 +118,16 @@ class YandexMusicApi {
         }
     };
 
-    post = (url, data) => {
-        return fetch(url, {
+    post = async (url, data) => {
+        const resp = await fetch(url, {
             method: 'POST',
-            body: this.serialize(data)
-        }).then(resp => {
-            if (!resp.ok) {
-                return resp.json().then(json => {
-                    let message = json.error_description || 'Unknown HTTP Error';
-                    if (message.includes('CAPTCHA')) {
-                        return this.handleCaptcha(message, json);
-                    } else {
-                        throw new Error(message);
-                    }
-                });
-            }
-            return resp;
-        });
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: this.serialize(data),
+        })
+        return resp.json();
     };
 }
 

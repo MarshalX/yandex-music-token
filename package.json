@@ -17,13 +17,13 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && mv build v2 && mkdir build && mv v2 build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "yarn build && cp CNAME ./build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "https://music-yandex-bot.ru/",
+  "homepage": "https://music-yandex-bot.ru/v2/",
   "eslintConfig": {
     "extends": "react-app"
   },
