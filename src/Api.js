@@ -23,7 +23,7 @@ class YandexMusicApi {
             if (!e.captcha_image_url) {
                 throw e;
             } else {
-                throw Captcha({
+                throw new Captcha({
                     captcha_image_url: e.captcha_image_url,
                     track_id: track_id,
                 });
@@ -42,12 +42,12 @@ class YandexMusicApi {
             'login': login,
             'x_token_client_id': X_TOKEN_CLIENT_ID,
             'x_token_client_secret': X_TOKEN_CLIENT_SECRET,
+            'display_language': 'ru',
         };
 
         const res = await this.post(url, data);
         if (!res.status || res.status === 'error') {
-            console.log('throw')
-            throw new BadRequest(res);
+            throw new BadRequest(res.errors.join('\n'));
         }
 
         return res.track_id;
@@ -73,18 +73,17 @@ class YandexMusicApi {
         }
 
         if (res.errors.includes('password.not_matched')) {
-            throw BadRequest('Неправильный пароль');
+            throw new BadRequest('Неправильный пароль');
         } else if (res.errors.includes('captcha.required')) {
-            throw Captcha({
+            throw new Captcha({
                 captcha_image_url: res.captcha_image_url,
                 track_id: track_id,
             });
         } else if (res.errors.includes('captcha.not_shown')) {
-            throw BadRequest('Капча не была отображена');
+            throw new BadRequest('Капча не была отображена');
         } else {
-            throw BadRequest(res);
+            throw new BadRequest(res.errors.join('\n'));
         }
-
     }
 
     generate_yandex_music_token_by_x_token = async x_token => {
@@ -103,7 +102,7 @@ class YandexMusicApi {
             return res.access_token;
         }
 
-        throw BadRequest(res);
+        throw new BadRequest(res.errors.join('\n'));
     }
 
     serialize = (obj) => {
@@ -115,13 +114,16 @@ class YandexMusicApi {
         return str.join('&');
     };
 
-    post = (url, data) => {
-        return fetch(url, {
+    post = async (url, data) => {
+        const resp = await fetch(url, {
             method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
             body: this.serialize(data),
-        }).then(resp => {
-            return resp.json();
-        });
+        })
+        return resp.json();
     };
 }
 
