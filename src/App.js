@@ -30,7 +30,7 @@ class App extends Component {
                                     Trello для вопросов и предложений:
                                     <a href="https://trello.com/b/D5f3kRxF"> Yandex.Music Telegram Bot</a></p>
                                 <p>Канал с обновлениями и новостями:
-                                    <a href="tg://resolve?domain=music_yandex_channel"> @music_yandex_channel</a></p>
+                                    <a href="https://t.me/music_yandex_channel"> @music_yandex_channel</a></p>
                             </Container>
                         </Row>
                     </Col>
@@ -80,7 +80,7 @@ class App extends Component {
                                     href="https://github.com/MarshalX/yandex-music-token">yandex-music-token</a></span>
                             </Col>
                             <Col className="text-right">
-                                <span> Автор: <a href="tg://resolve?domain=MarshalX">@MarshalX</a></span>
+                                <span> Автор: <a href="https://t.me/MarshalX">@MarshalX</a></span>
                             </Col>
                         </Row>
                     </Container>

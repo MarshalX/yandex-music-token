@@ -5,7 +5,6 @@ import {CaptchaRequired, CaptchaWrong, YandexMusicApi} from "./Api";
 
 class AuthForm extends React.Component {
     api = new YandexMusicApi();
-    mirror = 'https://teleg.run/';
 
     constructor(props) {
         super(props);
@@ -56,14 +55,11 @@ class AuthForm extends React.Component {
         const {x_captcha_url, error, token} = this.state;
         return token ? (
             <>
-                <a href={`tg://resolve?domain=music_yandex_bot&start=${token}`}>
+                <a href={`https://t.me/music_yandex_bot?start=${token}`}>
                     <Button variant="primary" block>
                         Перейти в бота
                     </Button>
                 </a>
-                <small className="text-muted ">Если кнопка не работает -
-                    <a href={`${this.mirror}music_yandex_bot?start=${token}`}> перейдите по ссылке</a>
-                </small>
             </>
         ) : (
             <Form>
