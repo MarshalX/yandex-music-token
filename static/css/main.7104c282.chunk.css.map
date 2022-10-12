@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/App.css"],"names":[],"mappings":"AAAA,KACI,qBACJ,CAcA,kCACI,oBACJ","file":"main.7104c282.chunk.css","sourcesContent":["body {\n    background-color: #ffff;\n}\n\na:link {\n    text-decoration: none;\n}\n\na:visited {\n    text-decoration: none;\n}\n\na:hover {\n    text-decoration: none;\n}\n\na:active {\n    text-decoration: none;\n}\n"]}
