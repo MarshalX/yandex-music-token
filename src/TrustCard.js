@@ -11,8 +11,8 @@ class TrustCard extends React.Component {
                 </Card.Header>
 
                 <Card.Body>
-                    <Card.Title>{this.props.title}</Card.Title>
-                    <Card.Text>{this.props.text}</Card.Text>
+                    <div className="card-title text-center h5" style={{fontSize: "1.15rem"}}>{this.props.title}</div>
+                    <Card.Text className="text-center">{this.props.text}</Card.Text>
                 </Card.Body>
             </Card>
         );

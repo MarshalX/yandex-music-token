@@ -1,72 +1,58 @@
 import React, {Component} from 'react';
-import {Badge, CardDeck, Col, Container, Image, Row} from 'react-bootstrap'
+import {CardDeck, Col, Container, Image, Row} from 'react-bootstrap'
 import AuthForm from "./AuthForm";
 import TrustCard from "./TrustCard";
+
+class Link extends Component {
+    render() {
+        const {children, text} = this.props;
+
+        let content = text;
+        if (!content) {
+            content = children;
+        }
+
+        return <a href={this.props.url} target="_blank" rel="noreferrer">{content}</a>
+    }
+}
 
 class App extends Component {
     render() {
         return (
             <Container>
                 <Row className="mt-5">
-                    <Col className="d-none d-xl-block col-md-3"/>
+                    <Col className="d-none d-xl-block col-md-4"/>
                     <Col>
-                        <Row>
-                            <Container>
-                                <h4>Яндекс.Музыка - Telegram <Badge variant="primary">Bot</Badge></h4>
-                            </Container>
+                        <Row className="d-flex justify-content-center">
+                            <Image src="logo.png" width="30%" roundedCircle/>
                         </Row>
-                        <Row>
-                            <Container>
-                                <Image src="logo.png" width="100%" roundedCircle/>
-                            </Container>
+                        <Row className="d-flex justify-content-center px-5 text-center">
+                            <p>Полноценный клиент сервиса Яндекс.Музыка в Telegram!</p>
                         </Row>
-                        <Row>
-                            <Container>
-                                <p>Данный бот позволяет прослушивать плейлист дня и другие умные плейлисты, Ваши личные
-                                    плейлисты, а так же понравившиеся треки. Вы можете лайкать и дизлайкать треки,
-                                    получать текст песен, искать новые музыкальные предпочтения, делиться ими со всеми и
-                                    слушать любимую музыку в мессенджере Telegram.</p>
-                                <p>
-                                    Trello для вопросов и предложений:
-                                    <a href="https://trello.com/b/D5f3kRxF"> Yandex.Music Telegram Bot</a></p>
-                                <p>Канал с обновлениями и новостями:
-                                    <a href="https://t.me/music_yandex_channel"> @music_yandex_channel</a></p>
-                            </Container>
-                        </Row>
+                        <AuthForm Link={Link}/>
                     </Col>
-                    <Col className="d-none d-xl-block col-md-3"/>
-                </Row>
-                <Row>
-                    <Col className="d-none d-xl-block col-md-3"/>
-                    <Col>
-                        <AuthForm/>
-                    </Col>
-                    <Col className="d-none d-xl-block col-md-3"/>
+                    <Col className="d-none d-xl-block col-md-4"/>
                 </Row>
                 <Row className="mt-5">
                     <Container className="justify-content-center ">
-                        <h2 className="text-center mb-3">Причины, по которым нам стоит доверять</h2>
+                        <h2 className="text-center mb-3">Это безопасно потому что мы</h2>
                         <Row>
-                            <CardDeck>
-                                <TrustCard icon={['fab', 'yandex']} title="Напрямую в Яндекс!"
-                                           text="Ваш логин и пароль отправляется с Вашего компьютера сразу на сервера
-                                           Яндекса без каких-либо посредников."/>
-                                <TrustCard icon={['fab', 'expeditedssl']} title="Используем безопасное соединение!"
-                                           text="Все ваши данные отправляются в зашифрованном виде через протокол HTTPS."/>
-                                <TrustCard icon="key" title="Не храним ваши пароли!"
-                                           text="На наших серверах хранится только Ваш уникальный токен,
-                                           полученный при авторизации."/>
-                            </CardDeck>
-                            <CardDeck>
-                                <TrustCard icon="code" title="Открытый исходный код!"
-                                           text="Весь исходный код опубликован в репозитории на GitHub и доступен для
-                                            просмотра."/>
-                                <TrustCard icon="shield-alt" title="Только официальное приложение!"
-                                           text="Авторизация происходит через OAuth приложение Яндекса используемое в их
-                                           клиентах."/>
-                                <TrustCard icon="spinner" title="Выполнение в браузере!"
-                                           text="Весь код выполняется в Вашем браузере без возможности вмешательства с
-                                           чьей-либо стороны."/>
+                            <CardDeck className="mx-0">
+                                <TrustCard icon={['fab', 'yandex']} title="Отправляем напрямую"
+                                           text="Данные отправляется сразу на сервера
+                                           Яндекс без посредников"/>
+                                <TrustCard icon={['fab', 'expeditedssl']} title="Используем HTTPS"
+                                           text="Вся информация отправляется в зашифрованном виде"/>
+                                <TrustCard icon="key" title="Не храним пароли"
+                                           text="На наших серверах хранится только уникальный токен"/>
+                                <TrustCard icon="code" title="Показываем код"
+                                           text="Весь исходный код опубликован в репозитории на GitHub"/>
+                                {/*<TrustCard icon="shield-alt" title="Официальное приложение"*/}
+                                {/*           text="Авторизация происходит через OAuth приложение Яндекс используемое в их*/}
+                                {/*           собственных клиентах"/>*/}
+                                {/*<TrustCard icon="spinner" title="Выполнение в браузере"*/}
+                                {/*           text="Процесс авторизации выполняется в браузере без возможности вмешательства*/}
+                                {/*           со стороны сервера"/>*/}
                             </CardDeck>
                         </Row>
                     </Container>
@@ -75,12 +61,15 @@ class App extends Component {
                 <Row className="mb-3">
                     <Container>
                         <Row className="d-flex justify-content-between">
-                            <Col>
-                                <span>Исходный код: <a
-                                    href="https://github.com/MarshalX/yandex-music-token">yandex-music-token</a></span>
+                            <Col xs={{span: "auto"}}>
+                                <span>
+                                    Исходный код: <Link text="yandex-music-token" url="https://github.com/MarshalX/yandex-music-token"/>
+                                </span>
                             </Col>
-                            <Col className="text-right">
-                                <span> Автор: <a href="https://t.me/MarshalX">@MarshalX</a></span>
+                            <Col xs={{span: "auto"}} className="text-right">
+                                <span>
+                                    Автор: <Link text="@MarshalX" url="https://github.com/MarshalX/"/>
+                                </span>
                             </Col>
                         </Row>
                     </Container>
