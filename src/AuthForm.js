@@ -72,7 +72,7 @@ class AuthForm extends React.Component {
         <Form.Group controlId="formBasicPassword">
           <Form.Control name="password" onChange={this.handleChange}
                         type="password" placeholder="Введите пароль"/>
-          <Link url="https://passport.yandex.ru/auth/restore/" text="Не помню" />
+          <Link url="https://passport.yandex.ru/auth/restore/" text="Не помню"/>
         </Form.Group>
 
         {x_captcha_url &&
@@ -94,8 +94,17 @@ class AuthForm extends React.Component {
           </Form.Group>
         }
 
-        {error &&
+        {error && <>
           <p className="mt-1 text-danger">{`${error}`}</p>
+          <p className="mt-1 text-info">
+            Если вы всречаетесь с ошибкой о неправильном пароле, но уверены, что пароль верный, воспользуйтесь для
+            авторизации <a href="https://github.com/MarshalX/yandex-music-android-token/releases">этим Android
+            приложением.</a>
+            <br/>
+            <br/>
+            Для iOS есть только возможность попробовать исправить ошибку следуя шагам из <a href="https://t.me/music_yandex_channel/92">инструкции</a>.
+          </p>
+        </>
         }
 
         <Button variant="primary" type="submit" block onClick={this.handleSubmit} className="mb-1">
