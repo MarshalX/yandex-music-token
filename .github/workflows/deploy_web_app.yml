@@ -1,13 +1,18 @@
-name: Deploy on GitHub Pages
+name: Deploy web-app on GitHub Pages
 
 on:
   push:
     branches:
-      - v1
+      - main
+    paths:
+      - 'web-app/**'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./web-app
     steps:
       - uses: actions/checkout@v2
       - name: Set up Node JS
