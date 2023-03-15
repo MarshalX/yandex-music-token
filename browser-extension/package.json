@@ -3,7 +3,9 @@
   "name": "yandex-music-token",
   "scripts": {
     "start:firefox": "web-ext run --source-dir ./src/",
-    "build": "web-ext build --source-dir ./src/ --artifacts-dir dist --filename yandex-music-token-extension.zip"
+    "build:firefox": "cp ./src/manifest_v2.json ./src/manifest.json && web-ext build --source-dir ./src/ --artifacts-dir dist --filename yandex-music-token-extension-firefox.zip",
+    "build:chrome": "cp ./src/manifest_v3.json ./src/manifest.json && web-ext build --source-dir ./src/ --artifacts-dir dist --filename yandex-music-token-extension-chrome.zip",
+    "build": "npm run build:firefox && npm run build:chrome"
   },
   "engines": {
     "node": ">=14.0.0",
