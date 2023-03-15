@@ -9,7 +9,7 @@
   - Сайт для входа: https://music-yandex-bot.ru
 - **[android-app](android-app)** - использует современную SDK работающую на intents + webview. Работает для всех аккаунтов.
   - APK файл: https://github.com/MarshalX/yandex-music-token/releases
-- **[browser-extension](browser-extension)** - использует другой вариант OAuth авторизации. Перенаправляет на страницу ЯМ (redirect_uri/Callback URI). Расширение перехватывает это перенаправление и достаёт токен.
+- **[browser-extension](browser-extension)** - использует другой вариант OAuth авторизации. Перехватывает токен из переадресации.
   - Chrome: TODO store link
   - Firefox: TODO store link
 

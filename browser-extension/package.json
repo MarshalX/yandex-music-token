@@ -1,0 +1,19 @@
+{
+  "private": false,
+  "name": "yandex-music-token",
+  "scripts": {
+    "start:firefox": "web-ext run --source-dir ./src/",
+    "build": "web-ext build --source-dir ./src/ --artifacts-dir dist --filename yandex-music-token-extension.zip"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.9.0"
+  },
+  "browserslist": [
+    "last 1 Chrome version",
+    "last 1 Firefox version"
+  ],
+  "devDependencies": {
+    "web-ext": "^7.5.0"
+  }
+}
