@@ -14,7 +14,7 @@
 - **[browser-extension](browser-extension)** - использует другой вариант OAuth авторизации. Перехватывает токен из перенаправления.
   - Скачать: https://github.com/MarshalX/yandex-music-token/releases/tag/e1.0
   - Chrome: TODO store link
-  - Firefox: TODO store link
+  - Firefox: https://addons.mozilla.org/en-US/firefox/addon/yandex-music-token/
 
 ### Полезные ссылки
 
