@@ -20,6 +20,16 @@ class AuthForm extends React.Component {
     this.setState({...this.state, [name]: value, error: null});
   };
 
+  handleCopyClick = (event) => {
+    event.preventDefault();
+
+    if (!navigator.clipboard) {
+      return;
+    }
+
+    navigator.clipboard.writeText(this.state.token);
+  }
+
   handleSubmit = event => {
     event.preventDefault();
 
@@ -61,6 +71,7 @@ class AuthForm extends React.Component {
             Перейти в бота
           </Button>
         </a>
+        <a href="#" onClick={this.handleCopyClick}>Скопировать токен</a>
       </>
     ) : (
       <Form>
@@ -98,7 +109,7 @@ class AuthForm extends React.Component {
           <p className="mt-1 text-danger">{`${error}`}</p>
           <p className="mt-1 text-info">
             Если вы всречаетесь с ошибкой о неправильном пароле, но уверены, что пароль верный, воспользуйтесь для
-            авторизации <a href="https://github.com/MarshalX/yandex-music-android-token/releases">этим Android
+            авторизации <a href="https://github.com/MarshalX/yandex-music-token/releases">этим Android
             приложением.</a>
             <br/>
             <br/>

@@ -1,12 +1,10 @@
-## Авторизация в Telegram боте Яндекс.Музыка 
+## Android приложение для авторизации в ЯМ через официальное SDK
 
-Данное приложение для Android поможет войти в свой ЯМ аккаунт если не получается сделать это через сайт https://music-yandex-bot.ru/.
+APK файл: https://github.com/MarshalX/yandex-music-token/releases 
 
-Приложение доступно для скачивания [тут](https://github.com/MarshalX/yandex-music-token/releases) (вкладка Releases). 
+### Скриншот
 
-### Скриншоты
-
-![App demo](../.github/screenshots/app.png)
+![demo](../.github/screenshots/app.png)
 
 ### Благодарность
 
