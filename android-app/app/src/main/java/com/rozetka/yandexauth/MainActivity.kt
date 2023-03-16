@@ -1,6 +1,8 @@
 package com.rozetka.yandexauth
 
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -9,6 +11,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -18,7 +21,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowCompat
@@ -30,9 +36,11 @@ import com.yandex.authsdk.YandexAuthSdk
 
 const val REQUEST_LOGIN_SDK = 1337
 const val BOT_DEEP_LINK = "https://t.me/music_yandex_bot?start="
+const val SOURCE_CODE_LINK = "https://github.com/MarshalX/yandex-music-token"
 
 class MainActivity : ComponentActivity() {
     private var showErrorDialog: MutableState<Boolean> = mutableStateOf(false)
+    private val token: MutableState<String> = mutableStateOf("")
 
     private lateinit var sdk: YandexAuthSdk
     private lateinit var _context: Context
@@ -42,7 +50,7 @@ class MainActivity : ComponentActivity() {
             try {
                 val yandexAuthToken = sdk.extractToken(resultCode, data)
                 yandexAuthToken?.let {
-                    openUriInBrowser("$BOT_DEEP_LINK${it.value}", _context)
+                    token.value = it.value
                 }
 
             } catch (_: YandexAuthException) {
@@ -57,6 +65,13 @@ class MainActivity : ComponentActivity() {
         val uri = Uri.parse(uriString)
         val intent = Intent(Intent.ACTION_VIEW, uri)
         context.startActivity(intent)
+    }
+
+    private fun copyToken(context: Context) {
+        val clipboardManager =
+            context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("token", token.value)
+        clipboardManager.setPrimaryClip(clip)
     }
 
     @Composable
@@ -102,7 +117,7 @@ class MainActivity : ComponentActivity() {
                         if (showErrorDialog.value) {
                             ShowAlertDialog(
                                 "Ошибка",
-                                "Авторизация не удалась",
+                                "Не удалось авторизоваться",
                                 fun() { showErrorDialog.value = false })
                         }
 
@@ -124,23 +139,86 @@ class MainActivity : ComponentActivity() {
                             textAlign = TextAlign.Center
                         )
 
-                        Button(
-                            onClick = {
-                                ActivityCompat.startActivityForResult(
-                                    this@MainActivity as Activity,
-                                    sdk.createLoginIntent(YandexAuthLoginOptions.Builder().build()),
-                                    REQUEST_LOGIN_SDK,
-                                    null
-                                )
-                            },
-                            Modifier
-                                .padding(vertical = 10.dp)
-                                .align(Alignment.CenterHorizontally)
-                                .height(48.dp)
-                                .width(200.dp)
-                        ) {
-                            Text(text = "Войти")
+                        if (token.value == "") {
+                            Button(
+                                onClick = {
+                                    ActivityCompat.startActivityForResult(
+                                        this@MainActivity as Activity,
+                                        sdk.createLoginIntent(
+                                            YandexAuthLoginOptions.Builder().build()
+                                        ),
+                                        REQUEST_LOGIN_SDK,
+                                        null
+                                    )
+                                },
+                                Modifier
+                                    .padding(vertical = 10.dp)
+                                    .align(Alignment.CenterHorizontally)
+                                    .height(48.dp)
+                                    .width(200.dp)
+                            ) {
+                                Text(text = "Авторизоваться")
+                            }
+                        } else {
+                            Button(
+                                onClick = {
+                                    openUriInBrowser("$BOT_DEEP_LINK${token.value}", _context)
+                                },
+                                Modifier
+                                    .padding(vertical = 10.dp)
+                                    .align(Alignment.CenterHorizontally)
+                                    .height(48.dp)
+                                    .width(200.dp)
+                            ) {
+                                Text(text = "Перейти в бота")
+                            }
                         }
+                    }
+                }
+                Box(
+                    Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 5.dp)
+                        .padding(vertical = 5.dp)) {
+                    if (token.value != "") {
+                        Column(
+                            Modifier
+                                .align(Alignment.BottomStart)
+                                .fillMaxWidth()
+                                .navigationBarsPadding()
+                        ) {
+                            val copyTokenString = buildAnnotatedString {
+                                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                                    append("Скопировать токен")
+                                }
+                            }
+
+                            ClickableText(
+                                text = copyTokenString,
+                                onClick = { copyToken(context = _context) },
+                            )
+
+                        }
+                    }
+                    Column(
+                        Modifier
+                            .align(Alignment.BottomEnd)
+                            .fillMaxWidth()
+                            .navigationBarsPadding()
+                    ) {
+                        val sourceCodeString = buildAnnotatedString {
+                            append("Исходный код: ")
+
+                            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                                append("yandex-music-token")
+                            }
+                        }
+
+                        ClickableText(
+                            text = sourceCodeString,
+                            onClick = { openUriInBrowser(SOURCE_CODE_LINK, _context) },
+                            modifier = Modifier.align(Alignment.End)
+                        )
                     }
                 }
             }
