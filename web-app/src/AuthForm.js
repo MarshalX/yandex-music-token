@@ -71,7 +71,7 @@ class AuthForm extends React.Component {
             Перейти в бота
           </Button>
         </a>
-        <a href="#" onClick={this.handleCopyClick}>Скопировать токен</a>
+        <a href="/#" onClick={this.handleCopyClick}>Скопировать токен</a>
       </>
     ) : (
       <Form>
