@@ -28,7 +28,7 @@ class AuthForm extends React.Component {
     }
 
     navigator.clipboard.writeText(this.state.token);
-  }
+  };
 
   handleSubmit = event => {
     event.preventDefault();
@@ -109,11 +109,16 @@ class AuthForm extends React.Component {
           <p className="mt-1 text-danger">{`${error}`}</p>
           <p className="mt-1 text-info">
             Если вы всречаетесь с ошибкой о неправильном пароле, но уверены, что пароль верный, воспользуйтесь для
-            авторизации <a href="https://github.com/MarshalX/yandex-music-token/releases">этим Android
-            приложением.</a>
-            <br/>
-            <br/>
-            Для iOS есть только возможность попробовать исправить ошибку следуя шагам из <a href="https://t.me/music_yandex_channel/92">инструкции</a>.
+            авторизации другим способом:
+
+            <ul>
+              <li><a href="https://github.com/MarshalX/yandex-music-token/releases">Android приложение</a></li>
+              <li><a
+                href="https://chrome.google.com/webstore/detail/yandex-music-token/lcbjeookjibfhjjopieifgjnhlegmkib">Расширение
+                для Google Chrome</a></li>
+              <li><a href="https://addons.mozilla.org/en-US/firefox/addon/yandex-music-token/">Расширение для Mozilla
+                Firefox</a></li>
+            </ul>
           </p>
         </>
         }
