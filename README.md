@@ -12,8 +12,7 @@
 - **[android-app](android-app)** - использует современную SDK работающую на intents + webview. Работает для всех аккаунтов.
   - APK файл: https://github.com/MarshalX/yandex-music-token/releases
 - **[browser-extension](browser-extension)** - использует другой вариант OAuth авторизации. Перехватывает токен из перенаправления.
-  - Скачать: https://github.com/MarshalX/yandex-music-token/releases/tag/e1.0
-  - Chrome: TODO store link
+  - Chrome: https://chrome.google.com/webstore/detail/yandex-music-token/lcbjeookjibfhjjopieifgjnhlegmkib
   - Firefox: https://addons.mozilla.org/en-US/firefox/addon/yandex-music-token/
 
 ### Полезные ссылки
