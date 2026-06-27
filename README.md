@@ -8,7 +8,7 @@
 
 Существует три варианта входа:
 - **[web-app](web-app)** - использует старую версию OAuth. Работает не для всех аккаунтов.
-  - Сайт: https://music-yandex-bot.ru
+  - Сайт: https://ym-token.marshal.dev
 - **[android-app](android-app)** - использует современную SDK работающую на intents + webview. Работает для всех аккаунтов.
   - APK файл: https://github.com/MarshalX/yandex-music-token/releases
 - **[browser-extension](browser-extension)** - использует другой вариант OAuth авторизации. Перехватывает токен из перенаправления.

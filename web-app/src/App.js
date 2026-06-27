@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {CardDeck, Col, Container, Image, Row} from 'react-bootstrap'
+import {Alert, CardDeck, Col, Container, Image, Row} from 'react-bootstrap'
 import AuthForm from "./AuthForm";
 import TrustCard from "./TrustCard";
 
@@ -20,6 +20,12 @@ class App extends Component {
     render() {
         return (
             <Container>
+                <Row className="mt-3">
+                    <Alert variant="warning" className="w-100 text-center mb-0">
+                        Сайт переехал на новый адрес: <Alert.Link href="https://ym-token.marshal.dev">ym-token.marshal.dev</Alert.Link>.
+                        Старый домен <b>music-yandex-bot.ru</b> скоро перестанет работать — сохраните новый адрес в закладки.
+                    </Alert>
+                </Row>
                 <Row className="mt-5">
                     <Col className="d-none d-xl-block col-md-4"/>
                     <Col>
