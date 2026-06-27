@@ -1,6 +1,12 @@
 import './styles.css';
 import { detectLang, t, type Lang } from './i18n';
-import { CaptchaRequired, CaptchaWrong, generateToken } from './api';
+import {
+  CaptchaRequired,
+  CaptchaWrong,
+  generateToken,
+  pollDeviceToken,
+  requestDeviceCode,
+} from './api';
 
 const LINKS = {
   repo: 'https://github.com/MarshalX/yandex-music-token',
@@ -16,6 +22,17 @@ const LINKS = {
   newDomain: 'https://ym-token.marshal.dev',
 };
 
+interface DeviceState {
+  active: boolean;
+  polling: boolean;
+  userCode?: string;
+  verificationUrl?: string;
+  deviceCode?: string;
+  expiresAt?: number;
+  expired?: boolean;
+  error?: string;
+}
+
 interface State {
   lang: Lang;
   username: string;
@@ -27,6 +44,8 @@ interface State {
   token?: string;
   loading: boolean;
   copied: boolean;
+  device: DeviceState;
+  showPasswordForm: boolean;
 }
 
 const state: State = {
@@ -36,6 +55,8 @@ const state: State = {
   captchaAnswer: '',
   loading: false,
   copied: false,
+  device: { active: false, polling: false },
+  showPasswordForm: false,
 };
 
 const root = document.getElementById('app')!;
@@ -87,17 +108,43 @@ function header(d: ReturnType<typeof t>): string {
   </header>`;
 }
 
-function toolSection(d: ReturnType<typeof t>): string {
-  if (state.token) {
-    return `<section class="tool card result" id="tool">
-      <h2>${d.result.title}</h2>
-      <code class="token-box" id="token-box">${esc(state.token)}</code>
-      <p class="token-warning">${d.result.warning}</p>
-      <button class="btn btn-primary" id="copy-btn">${state.copied ? d.result.copied : d.result.copy}</button>
-      <button class="btn btn-secondary" id="again-btn">${d.result.again}</button>
-    </section>`;
-  }
+function resultView(d: ReturnType<typeof t>): string {
+  return `<section class="tool card result" id="tool">
+    <h2>${d.result.title}</h2>
+    <code class="token-box" id="token-box">${esc(state.token!)}</code>
+    <p class="token-warning">${d.result.warning}</p>
+    <button class="btn btn-primary" id="copy-btn">${state.copied ? d.result.copied : d.result.copy}</button>
+    <button class="btn btn-secondary" id="again-btn">${d.result.again}</button>
+  </section>`;
+}
 
+function deviceView(d: ReturnType<typeof t>): string {
+  const dev = state.device;
+  const done = dev.error || dev.expired;
+  const status = dev.error
+    ? `<div class="error">${esc(dev.error)}</div>`
+    : dev.expired
+      ? `<div class="error">${d.tool.deviceExpired}</div>`
+      : `<p class="device-status"><span class="spinner"></span>${d.tool.deviceWaiting}</p>`;
+
+  return `<section class="tool card" id="tool">
+    <h2>${d.tool.title}</h2>
+    <p class="tool-desc">${d.tool.deviceInstruction}</p>
+    <div class="code-box">
+      <span class="code" id="user-code">${esc(dev.userCode ?? '')}</span>
+      <button type="button" class="btn-icon" id="copy-code">${state.copied ? d.result.copied : d.result.copy}</button>
+    </div>
+    <a href="${esc(dev.verificationUrl ?? '#')}" target="_blank" rel="noreferrer">
+      <button type="button" class="btn btn-primary">${d.tool.deviceOpen}</button>
+    </a>
+    ${status}
+    <button type="button" class="btn btn-secondary" id="${done ? 'device-retry' : 'device-cancel'}">
+      ${done ? d.tool.deviceRetry : d.tool.deviceCancel}
+    </button>
+  </section>`;
+}
+
+function passwordForm(d: ReturnType<typeof t>): string {
   const captcha = state.captchaUrl
     ? `<div class="captcha">
         <img src="${esc(state.captchaUrl)}" alt="captcha" />
@@ -113,28 +160,38 @@ function toolSection(d: ReturnType<typeof t>): string {
     ? `<div class="error">${esc(state.error)}<span class="retry">${d.error.retry}</span></div>`
     : '';
 
+  return `<form id="tool-form" class="password-form">
+    <p class="fallback-note">${d.tool.fallbackNote}</p>
+    <div class="field">
+      <input class="input" id="username" type="text" autocomplete="username"
+        placeholder="${d.tool.username}" value="${esc(state.username)}" />
+    </div>
+    <div class="field">
+      <input class="input" id="password" type="password" autocomplete="current-password"
+        placeholder="${d.tool.password}" value="${esc(state.password)}" />
+      <a class="field-hint" href="${LINKS.forgot}" target="_blank" rel="noreferrer">${d.tool.forgot}</a>
+    </div>
+    ${captcha}
+    ${error}
+    <button class="btn btn-primary" type="submit" id="submit-btn" ${state.loading ? 'disabled' : ''}>
+      ${state.loading ? d.tool.loading : d.tool.submit}
+    </button>
+    <a href="${LINKS.register}" target="_blank" rel="noreferrer">
+      <button type="button" class="btn btn-secondary">${d.tool.register}</button>
+    </a>
+  </form>`;
+}
+
+function toolSection(d: ReturnType<typeof t>): string {
+  if (state.token) return resultView(d);
+  if (state.device.active) return deviceView(d);
+
   return `<section class="tool card" id="tool">
     <h2>${d.tool.title}</h2>
     <p class="tool-desc">${d.tool.desc}</p>
-    <form id="tool-form">
-      <div class="field">
-        <input class="input" id="username" type="text" autocomplete="username"
-          placeholder="${d.tool.username}" value="${esc(state.username)}" />
-      </div>
-      <div class="field">
-        <input class="input" id="password" type="password" autocomplete="current-password"
-          placeholder="${d.tool.password}" value="${esc(state.password)}" />
-        <a class="field-hint" href="${LINKS.forgot}" target="_blank" rel="noreferrer">${d.tool.forgot}</a>
-      </div>
-      ${captcha}
-      ${error}
-      <button class="btn btn-primary" type="submit" id="submit-btn" ${state.loading ? 'disabled' : ''}>
-        ${state.loading ? d.tool.loading : d.tool.submit}
-      </button>
-      <a href="${LINKS.register}" target="_blank" rel="noreferrer">
-        <button type="button" class="btn btn-secondary">${d.tool.register}</button>
-      </a>
-    </form>
+    <button type="button" class="btn btn-primary" id="device-start">${d.tool.deviceButton}</button>
+    <button type="button" class="btn-link" id="toggle-password">${d.tool.fallbackToggle}</button>
+    ${state.showPasswordForm ? passwordForm(d) : ''}
   </section>`;
 }
 
@@ -257,15 +314,75 @@ async function submit(): Promise<void> {
   }
 }
 
-async function copy(): Promise<void> {
-  if (!state.token || !navigator.clipboard) return;
-  await navigator.clipboard.writeText(state.token);
+async function copyText(text?: string): Promise<void> {
+  if (!text || !navigator.clipboard) return;
+  await navigator.clipboard.writeText(text);
   state.copied = true;
   render();
   setTimeout(() => {
     state.copied = false;
     render();
   }, 2000);
+}
+
+let pollGeneration = 0;
+
+async function startDeviceFlow(): Promise<void> {
+  const gen = ++pollGeneration;
+  state.device = { active: true, polling: true };
+  render();
+  try {
+    const code = await requestDeviceCode();
+    if (gen !== pollGeneration) return;
+    state.device = {
+      active: true,
+      polling: true,
+      userCode: code.userCode,
+      verificationUrl: code.verificationUrl,
+      deviceCode: code.deviceCode,
+      expiresAt: Date.now() + code.expiresIn * 1000,
+    };
+    render();
+    schedulePoll(gen, code.interval * 1000);
+  } catch (e) {
+    if (gen !== pollGeneration) return;
+    state.device = { active: true, polling: false, error: (e as Error).message };
+    render();
+  }
+}
+
+function schedulePoll(gen: number, intervalMs: number): void {
+  setTimeout(async () => {
+    if (gen !== pollGeneration) return;
+    if (Date.now() > (state.device.expiresAt ?? 0)) {
+      state.device.polling = false;
+      state.device.expired = true;
+      render();
+      return;
+    }
+    try {
+      const token = await pollDeviceToken(state.device.deviceCode!);
+      if (gen !== pollGeneration) return;
+      if (token) {
+        state.token = token;
+        state.device = { active: false, polling: false };
+        render();
+      } else {
+        schedulePoll(gen, intervalMs);
+      }
+    } catch (e) {
+      if (gen !== pollGeneration) return;
+      state.device.polling = false;
+      state.device.error = (e as Error).message;
+      render();
+    }
+  }, intervalMs);
+}
+
+function cancelDeviceFlow(): void {
+  pollGeneration++;
+  state.device = { active: false, polling: false };
+  render();
 }
 
 function bindInput(id: keyof State): void {
@@ -284,6 +401,19 @@ function wire(): void {
     }),
   );
 
+  // Device flow
+  document.getElementById('device-start')?.addEventListener('click', () => void startDeviceFlow());
+  document.getElementById('device-retry')?.addEventListener('click', () => void startDeviceFlow());
+  document.getElementById('device-cancel')?.addEventListener('click', cancelDeviceFlow);
+  document
+    .getElementById('copy-code')
+    ?.addEventListener('click', () => void copyText(state.device.userCode));
+  document.getElementById('toggle-password')?.addEventListener('click', () => {
+    state.showPasswordForm = !state.showPasswordForm;
+    render();
+  });
+
+  // Password fallback
   bindInput('username');
   bindInput('password');
 
@@ -297,7 +427,9 @@ function wire(): void {
     void submit();
   });
   document.getElementById('captcha-refresh')?.addEventListener('click', () => void submit());
-  document.getElementById('copy-btn')?.addEventListener('click', () => void copy());
+
+  // Result
+  document.getElementById('copy-btn')?.addEventListener('click', () => void copyText(state.token));
   document.getElementById('again-btn')?.addEventListener('click', () => {
     state.token = undefined;
     state.copied = false;

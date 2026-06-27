@@ -28,11 +28,20 @@ const dict = {
     tool: {
       title: 'Получить токен в браузере',
       desc:
-        'Войдите по логину и паролю. Токен создаётся прямо в браузере и показывается здесь. Способ использует старую авторизацию Яндекса и работает не для всех аккаунтов.',
+        'Войдите через Яндекс. Откроется страница Яндекса, где вы подтвердите вход кодом. Работает для всех аккаунтов, токен показывается прямо здесь.',
+      deviceButton: 'Войти через Яндекс',
+      deviceInstruction: 'Откройте страницу Яндекса и введите код подтверждения:',
+      deviceOpen: 'Открыть страницу Яндекса',
+      deviceWaiting: 'Ожидаем подтверждения входа на Яндексе…',
+      deviceExpired: 'Время действия кода истекло. Попробуйте снова.',
+      deviceRetry: 'Попробовать снова',
+      deviceCancel: 'Отмена',
+      fallbackToggle: 'Войти по логину и паролю',
+      fallbackNote: 'Старый способ. Работает не для всех аккаунтов.',
       username: 'Логин или email',
       password: 'Пароль',
       forgot: 'Не помню пароль',
-      submit: 'Получить токен',
+      submit: 'Войти',
       loading: 'Получаем…',
       register: 'Создать Яндекс ID',
       captcha: 'Введите код с картинки',
@@ -53,7 +62,7 @@ const dict = {
       subtitle: 'Если этот способ не сработал, есть ещё два.',
       web: {
         title: 'В браузере',
-        desc: 'Прямо на этой странице по логину и паролю. Старая авторизация, работает не для всех аккаунтов.',
+        desc: 'Прямо на этой странице. Подтвердите вход на Яндексе. Работает для всех аккаунтов.',
         badge: 'Этот сайт',
       },
       ext: {
@@ -106,11 +115,20 @@ const dict = {
     tool: {
       title: 'Get a token in your browser',
       desc:
-        "Sign in with your login and password. The token is created right in your browser and shown here. This method uses Yandex's legacy authorization and doesn't work for every account.",
+        'Sign in with Yandex. A Yandex page opens where you confirm sign-in with a code. Works for all accounts, and the token is shown right here.',
+      deviceButton: 'Sign in with Yandex',
+      deviceInstruction: 'Open the Yandex page and enter the confirmation code:',
+      deviceOpen: 'Open the Yandex page',
+      deviceWaiting: 'Waiting for confirmation on Yandex…',
+      deviceExpired: 'The code has expired. Please try again.',
+      deviceRetry: 'Try again',
+      deviceCancel: 'Cancel',
+      fallbackToggle: 'Sign in with login and password',
+      fallbackNote: 'Legacy method. Does not work for all accounts.',
       username: 'Login or email',
       password: 'Password',
       forgot: 'Forgot password',
-      submit: 'Get token',
+      submit: 'Sign in',
       loading: 'Working…',
       register: 'Create a Yandex ID',
       captcha: 'Enter the code from the image',
@@ -131,7 +149,7 @@ const dict = {
       subtitle: "If this method didn't work, there are two more.",
       web: {
         title: 'In the browser',
-        desc: "Right here, with login and password. Legacy auth, doesn't work for all accounts.",
+        desc: 'Right here. Confirm sign-in on Yandex. Works for all accounts.',
         badge: 'This site',
       },
       ext: {

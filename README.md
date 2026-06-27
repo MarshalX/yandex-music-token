@@ -1,17 +1,15 @@
-## Авторизация в Яндекс.Музыка
+## Получение токена Яндекс Музыки
 
-Проекты для авторизации в свой аккаунт в [Telegram-боте Яндекc.Музыки](https://t.me/music_yandex_bot). 
-
-Позволяют скопировать токен для других нужд.
+Проекты для получения OAuth токена своего аккаунта Яндекс Музыки. Токен можно использовать в [Python библиотеке](https://github.com/MarshalX/yandex-music-api) и других приложениях.
 
 ### Варианты входа
 
 Существует три варианта входа:
-- **[web-app](web-app)** - использует старую версию OAuth. Работает не для всех аккаунтов.
+- **[web-app](web-app)**: вход через Яндекс (device flow), работает для всех аккаунтов. Есть запасной вход по логину и паролю.
   - Сайт: https://ym-token.marshal.dev
-- **[android-app](android-app)** - использует современную SDK работающую на intents + webview. Работает для всех аккаунтов.
+- **[android-app](android-app)**: использует современный SDK на intents и webview. Работает для всех аккаунтов.
   - APK файл: https://github.com/MarshalX/yandex-music-token/releases
-- **[browser-extension](browser-extension)** - использует другой вариант OAuth авторизации. Перехватывает токен из перенаправления.
+- **[browser-extension](browser-extension)**: другой вариант OAuth авторизации. Перехватывает токен из перенаправления.
   - Chrome: https://chrome.google.com/webstore/detail/yandex-music-token/lcbjeookjibfhjjopieifgjnhlegmkib
   - Firefox: https://addons.mozilla.org/en-US/firefox/addon/yandex-music-token/
 
