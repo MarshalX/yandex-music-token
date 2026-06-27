@@ -22,6 +22,8 @@ const LINKS = {
   newDomain: 'https://ym-token.marshal.dev',
 };
 
+const DOMAIN_BANNER_UNTIL = Date.parse('2026-09-01T00:00:00Z');
+
 interface DeviceState {
   active: boolean;
   polling: boolean;
@@ -252,11 +254,16 @@ function footer(d: ReturnType<typeof t>): string {
   </div></footer>`;
 }
 
+function banner(d: ReturnType<typeof t>): string {
+  if (Date.now() >= DOMAIN_BANNER_UNTIL) return '';
+  return `<div class="banner">${d.banner.text}: <a href="${LINKS.newDomain}">${d.banner.link}</a>${d.banner.tail}</div>`;
+}
+
 function view(): string {
   const d = t(state.lang);
   return `<div class="container">
     ${header(d)}
-    <div class="banner">${d.banner.text}: <a href="${LINKS.newDomain}">${d.banner.link}</a>${d.banner.tail}</div>
+    ${banner(d)}
     <main>
       <section class="hero">
         <h1>${d.hero.title}</h1>
