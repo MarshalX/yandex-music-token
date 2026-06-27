@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Получение токена OAuth для аккаунта Яндекс Музыки: в браузере, через расширение или приложение для Android."
+    />
+    <link rel="manifest" href="/manifest.json" />
+    <title>Токен Яндекс Музыки</title>
+
+    <meta property="og:title" content="Токен Яндекс Музыки" />
+    <meta
+      property="og:description"
+      content="Получение токена OAuth для аккаунта Яндекс Музыки."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ym-token.marshal.dev/" />
+    <meta property="og:image" content="https://ym-token.marshal.dev/logo.png" />
+  </head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app. / Включите JavaScript, чтобы запустить
+      приложение.
+    </noscript>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+      (function (m, e, t, r, i, k, a) {
+        m[i] =
+          m[i] ||
+          function () {
+            (m[i].a = m[i].a || []).push(arguments);
+          };
+        m[i].l = 1 * new Date();
+        (k = e.createElement(t)),
+          (a = e.getElementsByTagName(t)[0]),
+          (k.async = 1),
+          (k.src = r),
+          a.parentNode.insertBefore(k, a);
+      })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
+
+      ym(56768185, 'init', {
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+      });
+    </script>
+    <!-- /Yandex.Metrika counter -->
+  </body>
+</html>

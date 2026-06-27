@@ -14,18 +14,24 @@ jobs:
       run:
         working-directory: ./web-app
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Node JS
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
         with:
-          node-version: '14'
+          version: 11
+      - name: Set up Node JS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          cache-dependency-path: web-app/pnpm-lock.yaml
       - name: Install dependencies
-        run: yarn install
+        run: pnpm install --frozen-lockfile
       - name: Build
-        run: yarn build
+        run: pnpm build
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@4.1.0
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: web-app/build
-          clean: false
+          folder: web-app/dist
+          clean: true

@@ -1,6 +1,6 @@
 {
-  "short_name": "Яндекс.Музыка - Токен",
-  "name": "Яндекс.Музыка - Токен",
+  "short_name": "YM Token",
+  "name": "Yandex Music Token",
   "icons": [
     {
       "src": "favicon.png",
@@ -15,5 +15,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "theme_color": "#ffcc00"
 }
