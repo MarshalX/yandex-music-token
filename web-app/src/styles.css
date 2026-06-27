@@ -91,7 +91,7 @@ a:hover {
 .brand img {
   width: 38px;
   height: 38px;
-  border-radius: 50%;
+  border-radius: 9px;
 }
 
 .header-spacer {

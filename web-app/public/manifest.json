@@ -4,13 +4,18 @@
   "icons": [
     {
       "src": "favicon.png",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/png"
+      "type": "image/png",
+      "sizes": "64x64"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "180x180"
     },
     {
       "src": "logo.png",
       "type": "image/png",
-      "sizes": "1024x1024"
+      "sizes": "1080x1080"
     }
   ],
   "start_url": ".",
